@@ -1,0 +1,1146 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reeyuki Ports</title>
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="https://cdn.jsdelivr.net/gh/YukiPorts/index@main/favicon.ico"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <style>
+      :root {
+        --bg0: #070b14;
+        --bg1: #0b1220;
+        --panel: rgba(255, 255, 255, 0.04);
+        --panel2: rgba(255, 255, 255, 0.06);
+        --stroke: rgba(255, 255, 255, 0.08);
+        --stroke2: rgba(255, 255, 255, 0.14);
+        --text: #e6e6e6;
+        --muted: rgba(230, 230, 230, 0.55);
+        --muted2: rgba(230, 230, 230, 0.35);
+        --accent: #6ee7ff;
+        --accent2: #7cffa8;
+        --danger: #ff4d4d;
+        --radius: 14px;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+          scroll-behavior: auto !important;
+        }
+      }
+
+      body {
+        font-family:
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          Segoe UI,
+          Roboto,
+          Helvetica,
+          Arial;
+        background:
+          radial-gradient(
+            1200px 800px at 20% 0%,
+            rgba(110, 231, 255, 0.08),
+            transparent 60%
+          ),
+          radial-gradient(
+            900px 600px at 80% 20%,
+            rgba(124, 255, 168, 0.06),
+            transparent 55%
+          ),
+          linear-gradient(180deg, var(--bg0), var(--bg1));
+        min-height: 100vh;
+        color: var(--text);
+        padding: 28px;
+        letter-spacing: 0.2px;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        text-align: center;
+        font-size: 2.8rem;
+        font-weight: 650;
+        margin-bottom: 8px;
+        letter-spacing: -0.02em;
+      }
+
+      h1 i {
+        margin-right: 10px;
+        color: var(--accent);
+        opacity: 0.9;
+      }
+
+      .subtitle {
+        text-align: center;
+        color: var(--muted);
+        margin-bottom: 28px;
+        font-size: 1rem;
+      }
+
+      .stats {
+        text-align: center;
+        margin-bottom: 22px;
+        color: var(--muted2);
+        font-size: 0.9rem;
+      }
+
+      .stats span {
+        color: var(--accent);
+        font-weight: 600;
+      }
+
+      .search-container {
+        margin-bottom: 22px;
+        display: flex;
+        justify-content: center;
+      }
+
+      .search-input {
+        width: 100%;
+        max-width: 500px;
+        padding: 12px 16px;
+        border-radius: 12px;
+        border: 1px solid var(--stroke);
+        background: var(--panel);
+        color: var(--text);
+        font-size: 0.95rem;
+        outline: none;
+        transition:
+          border-color 0.18s ease,
+          background 0.18s ease;
+      }
+
+      .search-input:focus {
+        border-color: var(--accent);
+        background: var(--panel2);
+        box-shadow: 0 0 0 3px rgba(110, 231, 255, 0.15);
+      }
+
+      .search-input::placeholder {
+        color: var(--muted);
+      }
+
+      .games-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 16px;
+      }
+
+      .game-card {
+        background: var(--panel);
+        border: 1px solid var(--stroke);
+        border-radius: var(--radius);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        transition:
+          transform 0.18s ease,
+          border-color 0.18s ease,
+          background 0.18s ease,
+          box-shadow 0.18s ease;
+        outline: none;
+      }
+
+      .game-card:hover {
+        transform: translateY(-3px);
+        border-color: var(--stroke2);
+        background: var(--panel2);
+      }
+
+      .game-card:focus-visible {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(110, 231, 255, 0.2);
+        transform: translateY(-3px);
+      }
+
+      .game-card.keyboard-selected {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(110, 231, 255, 0.2);
+        transform: translateY(-3px);
+      }
+
+      .game-icon {
+        width: 100%;
+        height: 180px;
+        object-fit: contain;
+        background: rgba(0, 0, 0, 0.25);
+        border-bottom: 1px solid var(--stroke);
+        padding: 8px;
+      }
+
+      .game-title {
+        font-size: 1.05rem;
+        font-weight: 600;
+        padding: 0 14px;
+        color: #fff;
+      }
+
+      .game-actions {
+        display: flex;
+        gap: 8px;
+        padding: 0 14px 14px;
+      }
+
+      .btn {
+        flex: 1;
+        padding: 6px 8px;
+        border-radius: 8px;
+        border: 1px solid var(--stroke);
+        background: rgba(255, 255, 255, 0.03);
+        color: var(--text);
+        font-size: 0.75rem;
+        cursor: pointer;
+        transition:
+          transform 0.15s ease,
+          background 0.15s ease,
+          border-color 0.15s ease,
+          box-shadow 0.15s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        outline: none;
+      }
+
+      .btn:hover {
+        transform: translateY(-1px);
+        border-color: var(--stroke2);
+        background: rgba(255, 255, 255, 0.06);
+      }
+
+      .btn:focus-visible {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 2px rgba(110, 231, 255, 0.2);
+      }
+
+      .btn-play {
+        background: linear-gradient(
+          135deg,
+          rgba(110, 231, 255, 0.18),
+          rgba(124, 255, 168, 0.12)
+        );
+        border-color: rgba(110, 231, 255, 0.25);
+      }
+
+      .btn-play:hover {
+        background: linear-gradient(
+          135deg,
+          rgba(110, 231, 255, 0.25),
+          rgba(124, 255, 168, 0.18)
+        );
+      }
+
+      .btn-copy {
+        color: var(--muted);
+      }
+
+      .btn-download {
+        color: var(--accent);
+        border-color: rgba(110, 231, 255, 0.2);
+      }
+
+      .fullscreen-wrapper {
+        position: fixed;
+        inset: 0;
+        background: #000;
+        display: none;
+        z-index: 9999;
+      }
+
+      .fullscreen-wrapper.active {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .fullscreen-header {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        padding: 12px 16px;
+        background: rgba(0, 0, 0, 0.75);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .fullscreen-title {
+        font-size: 0.95rem;
+        color: #fff;
+        opacity: 0.9;
+      }
+
+      .game-frame {
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+
+      .btn-close {
+        background: rgba(255, 77, 77, 0.15);
+        border: 1px solid rgba(255, 77, 77, 0.35);
+        color: #ffb3b3;
+        padding: 8px 12px;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+
+      .btn-fullscreen {
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        color: var(--text);
+        padding: 8px 12px;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+
+      .toast {
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(10, 15, 25, 0.9);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        color: var(--text);
+        padding: 10px 14px;
+        border-radius: 10px;
+        font-size: 0.85rem;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+        pointer-events: none;
+      }
+
+      .toast.show {
+        opacity: 1;
+      }
+
+      .loading {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 1rem;
+        display: none;
+      }
+
+      .loading.show {
+        display: block;
+      }
+
+      .loading::after {
+        content: ".";
+        animation: dots 1.2s steps(4, end) infinite;
+      }
+
+      @keyframes dots {
+        0% {
+          content: ".";
+        }
+        33% {
+          content: "..";
+        }
+        66% {
+          content: "...";
+        }
+        100% {
+          content: ".";
+        }
+      }
+
+      .footer {
+        margin-top: 40px;
+        text-align: center;
+        padding: 20px;
+        border-top: 1px solid var(--stroke);
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .footer a {
+        color: var(--accent);
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.18s ease;
+      }
+
+      .footer a:hover {
+        color: var(--accent2);
+        text-decoration: underline;
+      }
+
+      .footer a:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+        border-radius: 2px;
+      }
+
+      .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 18px;
+        margin: 24px 0 16px;
+        background: var(--panel);
+        border: 1px solid var(--stroke);
+        border-radius: var(--radius);
+        cursor: pointer;
+        transition:
+          border-color 0.18s ease,
+          background 0.18s ease;
+        user-select: none;
+      }
+
+      .section-header:hover {
+        border-color: var(--stroke2);
+        background: var(--panel2);
+        transform: translateY(-1px);
+      }
+
+      .section-header:focus-visible {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(110, 231, 255, 0.15);
+        outline: none;
+      }
+
+      .section-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--text);
+      }
+
+      .section-icon {
+        transition: transform 0.3s ease;
+        color: var(--muted);
+      }
+
+      .section-header.collapsed .section-icon {
+        transform: rotate(-90deg);
+      }
+
+      .section-content {
+        overflow: hidden;
+        transition:
+          max-height 0.3s ease,
+          opacity 0.3s ease;
+      }
+
+      .section-content.collapsed {
+        max-height: 0;
+        opacity: 0;
+      }
+
+      .section-content:not(.collapsed) {
+        max-height: 2000px;
+        opacity: 1;
+      }
+
+      .game-overview {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.85);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+        padding: 20px;
+      }
+
+      .game-overview.active {
+        display: flex;
+      }
+
+      .overview-content {
+        background: var(--bg1);
+        border: 1px solid var(--stroke2);
+        border-radius: var(--radius);
+        max-width: 600px;
+        width: 100%;
+        max-height: 90vh;
+        overflow-y: auto;
+        padding: 24px;
+        position: relative;
+      }
+
+      .overview-close {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        background: rgba(255, 77, 77, 0.15);
+        border: 1px solid rgba(255, 77, 77, 0.35);
+        color: #ffb3b3;
+        padding: 8px 12px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: background 0.15s ease;
+      }
+
+      .overview-close:hover {
+        background: rgba(255, 77, 77, 0.25);
+      }
+
+      .overview-image {
+        width: 100%;
+        height: 200px;
+        object-fit: contain;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        background: rgba(0, 0, 0, 0.25);
+      }
+
+      .overview-title {
+        font-size: 1.5rem;
+        font-weight: 650;
+        color: #fff;
+        margin-bottom: 12px;
+      }
+
+      .overview-description {
+        color: var(--muted);
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin-bottom: 20px;
+      }
+
+      .overview-play-btn {
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(
+          135deg,
+          rgba(110, 231, 255, 0.2),
+          rgba(124, 255, 168, 0.15)
+        );
+        border: 1px solid rgba(110, 231, 255, 0.3);
+        border-radius: 12px;
+        color: var(--accent);
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.18s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        outline: none;
+      }
+
+      .overview-play-btn:hover {
+        background: linear-gradient(
+          135deg,
+          rgba(110, 231, 255, 0.3),
+          rgba(124, 255, 168, 0.25)
+        );
+        border-color: rgba(110, 231, 255, 0.4);
+        transform: translateY(-2px);
+      }
+
+      .overview-play-btn:focus-visible {
+        box-shadow: 0 0 0 3px rgba(110, 231, 255, 0.3);
+      }
+
+      .overview-close:focus-visible {
+        box-shadow: 0 0 0 3px rgba(255, 77, 77, 0.3);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1><i class="fas fa-gamepad"></i> Reeyuki Ports</h1>
+      <p class="subtitle">Web ports</p>
+
+      <div class="stats"><span id="gameCount">0</span> games available</div>
+
+      <div class="search-container">
+        <input
+          type="text"
+          class="search-input"
+          id="searchInput"
+          placeholder="Search games..."
+        />
+      </div>
+
+      <div class="games-grid" id="gamesGrid"></div>
+
+      <div class="section-header collapsed" id="baldiHeader">
+        <span class="section-title">Baldi Mods</span>
+        <i class="fas fa-chevron-down section-icon"></i>
+      </div>
+
+      <div class="section-content collapsed" id="baldiContent">
+        <div class="games-grid" id="baldiGrid"></div>
+      </div>
+    </div>
+
+    <div class="fullscreen-wrapper" id="fullscreenWrapper">
+      <div class="fullscreen-header">
+        <span class="fullscreen-title" id="fullscreenTitle">Game</span>
+        <div style="display: flex; gap: 10px">
+          <button class="btn-fullscreen" onclick="toggleFullscreen()">
+            <i class="fas fa-expand"></i> Fullscreen
+          </button>
+          <button class="btn-close" onclick="closeFullscreen()">
+            <i class="fas fa-times"></i> Close
+          </button>
+        </div>
+      </div>
+      <iframe class="game-frame" id="gameFrame" allowfullscreen></iframe>
+    </div>
+
+    <div class="toast" id="toast">URL copied to clipboard!</div>
+    <div class="loading" id="loading">Loading</div>
+
+    <div class="footer">
+      <a href="https://yukios.netlify.app" target="_blank"
+        >Explore YukiOS for more games!</a
+      >
+    </div>
+
+    <div class="footer">
+      <a href="https://reeyuki.nekoweb.org" target="_blank">Visit My Site</a>
+    </div>
+
+    <div class="game-overview" id="gameOverview">
+      <div class="overview-content">
+        <button class="overview-close" onclick="closeOverview()">
+          <i class="fas fa-times"></i> Close
+        </button>
+        <img class="overview-image" id="overviewImage" src="" alt="Game" />
+        <h2 class="overview-title" id="overviewTitle">Game Title</h2>
+        <p class="overview-description" id="overviewDescription">
+          Game description goes here.
+        </p>
+        <button class="overview-play-btn" id="overviewPlayBtn">
+          <i class="fas fa-play"></i> Play Now
+        </button>
+      </div>
+    </div>
+
+    <script type="module">
+      import angryBirds2Icon from "./icons/angryBirds2.webp";
+      import slimeRanchericon from "./icons/slime.webp";
+      import tabsIcon from "./icons/tabs.webp";
+      import baldiBaldsIcon from "./icons/baldiBalds.webp";
+      import baldisBasicsTeachingOnTwosIcon from "./icons/baldisBasicsTeachingOnTwos.webp";
+      import inscryptionIcon from "./icons/inscryption.webp";
+      import lobotomyIcon from "./icons/lobotomy.webp";
+      import minusThreeIcon from "./icons/minusThree.webp";
+      import nightIcon from "./icons/night.webp";
+      import plagueIcon from "./icons/plague.webp";
+      import frickIcon from "./icons/frick.webp";
+      import playtimeHellBear5vanIcon from "./icons/playtimeHellBear5van.webp";
+      import pneumoIcon from "./icons/pneumo.webp";
+      import suicideGuyIcon from "./icons/suicideguy.webp";
+      import theMathIsLeakingIcon from "./icons/theMathIsLeaking.webp";
+      import threeIcon from "./icons/three.webp";
+      import AntidisestablishmentarianismIcon from "./icons/antidis.webp";
+      import wheresBaldiIcon from "./icons/wheresBaldi.webp";
+      import ytIcon from "./icons/yt.webp";
+      import daddyIcon from "./icons/daddy.webp";
+      import starsIcon from "./icons/star.webp";
+      import slenderinaIcon from "./icons/slenderina.webp";
+      import wizardsIcon from "./icons/wizard.webp";
+
+      let currentBlobUrl = null;
+
+      const games = [
+        {
+          title: "Angry Birds 2",
+          file: "angry2.html",
+          icon: angryBirds2Icon,
+          description:
+            "The classic physics-based puzzle game returns with new birds, new levels, and exciting challenges. Destroy the pigs' fortresses using your slingshot skills!",
+        },
+        {
+          title: "Slime Rancher",
+          file: "slime.html",
+          icon: slimeRanchericon,
+          description:
+            "Explore a vibrant, alien world as Beatrix LeBeau, a rancher who's trying to make a living wrangling slimes. Build your ranch, discover new slime species, and uncover the mysteries of the Far, Far Range.",
+        },
+        {
+          title: "TABS",
+          file: "tabs.webp",
+          icon: tabsIcon,
+          description:
+            "Totally Accurate Battle Simulator - Watch wacky armies battle it out in hilarious physics-based combat. Create your own battles and watch the chaos unfold!",
+        },
+        {
+          title: "Inscryption",
+          file: "inscryption.html",
+          icon: inscryptionIcon,
+          description:
+            "A dark, atmospheric card game with elements of escape-room puzzles and psychological horror. Build decks, make sacrifices, and uncover the secrets of the cabin.",
+        },
+        {
+          title: "Lobotomy Corporation",
+          file: "lobotomy.html",
+          icon: lobotomyIcon,
+          description:
+            "Manage a facility containing various supernatural creatures. Balance containment, energy production, and employee safety in this challenging management simulation.",
+        },
+        {
+          title: "Night In The Woods",
+          file: "nightwoods.html",
+          icon: nightIcon,
+          description:
+            "A narrative-driven adventure game following Mae, a college dropout who returns to her hometown. Explore, reconnect with friends, and uncover the mysteries lurking in the woods.",
+        },
+        {
+          title: "Plague Inc Evolved",
+          file: "plague.html",
+          icon: plagueIcon,
+          description:
+            "Create and evolve a pathogen to infect and wipe out humanity. Strategy and planning are key as you adapt to countermeasures and spread your plague across the globe.",
+        },
+        {
+          title: "Five Nights At Frickbears 3",
+          file: "frickbears.html",
+          icon: frickIcon,
+          description:
+            "Survive five nights at a haunted pizza restaurant. Monitor security cameras, manage power, and avoid the animatronic characters that come to life at night.",
+        },
+        {
+          title: "Suicide Guy",
+          file: "suicideGuy.html",
+          icon: suicideGuyIcon,
+          description:
+            "A puzzle-platformer where you play as a guy trying to wake up from a coma. Navigate surreal dreamscapes and solve puzzles to return to consciousness.",
+        },
+        {
+          title: "Youtubers Life Omg",
+          file: "ytlifeomg.html",
+          icon: ytIcon,
+          description:
+            "Live the life of a content creator! Create videos, grow your channel, manage your social life, and become the ultimate YouTube star in this life simulation game.",
+        },
+        {
+          title: "Whos Your Daddy",
+          file: "daddy.html",
+          icon: daddyIcon,
+          description:
+            "A chaotic multiplayer game where one player is the dad trying to baby-proof the house, while the other is the baby trying to end it all in increasingly creative ways.",
+        },
+        {
+          title: "In Stars And Time",
+          file: "star.html",
+          icon: starsIcon,
+          description:
+            "A time-loop RPG adventure. Relive the same two days over and over, making different choices to save your friends and prevent the end of the world.",
+        },
+        {
+          title: "Slenderina The Cellar",
+          file: "slenderina.html",
+          icon: slenderinaIcon,
+          description:
+            "A horror game where you must escape from Slenderina's haunted cellar. Solve puzzles, avoid the terrifying entity, and find your way out before it's too late.",
+        },
+        {
+          title: "Wizards In Shorts",
+          file: "wizards.html",
+          icon: wizardsIcon,
+          description:
+            "A magical adventure featuring wizards in... shorts! Cast spells, explore mystical lands, and embark on a quirky journey filled with humor and wonder.",
+        },
+      ];
+
+      const baldiGames = [
+        { title: "Minus Three", file: "minusThree.html", icon: minusThreeIcon },
+        {
+          title: "Baldi Balds The Universe",
+          file: "baldiBalds.html",
+          icon: baldiBaldsIcon,
+        },
+        {
+          title: "Baldi's Basics: Teaching On Twos",
+          file: "baldisBasicsTeachingOnTwos.html",
+          icon: baldisBasicsTeachingOnTwosIcon,
+        },
+        {
+          title: "Playtime Hell & Bear 5 Van",
+          file: "playtimeHellBear5van.html",
+          icon: playtimeHellBear5vanIcon,
+        },
+        {
+          title: "Pneumonoultramicroscopicsilicovolcanoconiosis",
+          file: "pneumo.html",
+          icon: pneumoIcon,
+        },
+        {
+          title: "The Math Is Leaking",
+          file: "themathisleaking.html",
+          icon: theMathIsLeakingIcon,
+        },
+        { title: "Three", file: "three.html", icon: threeIcon },
+        {
+          title: "Where's Baldi",
+          file: "wheresBaldi.html",
+          icon: wheresBaldiIcon,
+        },
+        {
+          title: "Antidisestablishmentarianism",
+          file: "Antidisestablishmentarianism.html",
+          icon: AntidisestablishmentarianismIcon,
+        },
+      ];
+
+      const CDN_BASE =
+        "https://cdn.jsdelivr.net/gh/YukiPorts/index/@main/html/";
+      const GITHUB_BASE = "https://github.com/YukiPorts/index/tree/main/html/";
+
+      document.getElementById("gameCount").textContent = games.length;
+
+      const gamesGrid = document.getElementById("gamesGrid");
+      const baldiGrid = document.getElementById("baldiGrid");
+      const searchInput = document.getElementById("searchInput");
+      const baldiHeader = document.getElementById("baldiHeader");
+      const baldiContent = document.getElementById("baldiContent");
+
+      baldiHeader.addEventListener("click", () => {
+        baldiHeader.classList.toggle("collapsed");
+        baldiContent.classList.toggle("collapsed");
+      });
+
+      searchInput.addEventListener("input", (e) => {
+        const searchTerm = e.target.value.toLowerCase();
+
+        const mainCards = gamesGrid.querySelectorAll(".game-card");
+        mainCards.forEach((card, index) => {
+          const game = games[index];
+          const matches = game.title.toLowerCase().includes(searchTerm);
+          card.style.display = matches ? "flex" : "none";
+        });
+
+        const baldiCards = baldiGrid.querySelectorAll(".game-card");
+        baldiCards.forEach((card, index) => {
+          const game = baldiGames[index];
+          const matches = game.title.toLowerCase().includes(searchTerm);
+          card.style.display = matches ? "flex" : "none";
+        });
+
+        if (
+          searchTerm &&
+          baldiGames.some((game) =>
+            game.title.toLowerCase().includes(searchTerm),
+          )
+        ) {
+          baldiHeader.classList.remove("collapsed");
+          baldiContent.classList.remove("collapsed");
+        }
+      });
+
+      function renderGames() {
+        gamesGrid.innerHTML = "";
+        games.forEach((game) => {
+          const jsdelivrUrl = CDN_BASE + game.file;
+          const githubUrl = GITHUB_BASE + game.file;
+          const escapedTitle = game.title.replace(/'/g, "\\'");
+
+          const card = document.createElement("div");
+          card.className = "game-card";
+          card.style.cursor = "pointer";
+          card.innerHTML = `
+                <img class="game-icon" src="${game.icon}" alt="${game.title}" />
+                <div class="game-title">${game.title}</div>
+                <div class="game-actions">
+                    <button class="btn btn-play" onclick="event.stopPropagation(); playGame('${escapedTitle}', '${jsdelivrUrl}')"><i class="fas fa-play"></i> Play</button>
+                    <button class="btn btn-copy" onclick="event.stopPropagation(); copyUrl('${jsdelivrUrl}', '${escapedTitle}')"><i class="fas fa-copy"></i> Copy URL</button>
+                    <button class="btn btn-download" onclick="event.stopPropagation(); downloadHtml('${jsdelivrUrl}', '${game.file}', '${escapedTitle}')"><i class="fas fa-download"></i> Download</button>
+                </div>
+            `;
+          card.setAttribute("tabindex", "0");
+          card.setAttribute("role", "button");
+          card.setAttribute("aria-label", game.title);
+          card.addEventListener("click", () =>
+            showOverview(game, escapedTitle, jsdelivrUrl),
+          );
+          card.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              showOverview(game, escapedTitle, jsdelivrUrl);
+            }
+          });
+          gamesGrid.appendChild(card);
+        });
+      }
+
+      function renderBaldiGames() {
+        baldiGrid.innerHTML = "";
+        baldiGames.forEach((game) => {
+          const jsdelivrUrl = CDN_BASE + game.file;
+          const githubUrl = GITHUB_BASE + game.file;
+          const escapedTitle = game.title.replace(/'/g, "\\'");
+
+          const card = document.createElement("div");
+          card.className = "game-card";
+          card.style.cursor = "pointer";
+          card.innerHTML = `
+                <img class="game-icon" src="${game.icon}" alt="${game.title}" />
+                <div class="game-title">${game.title}</div>
+                <div class="game-actions">
+                    <button class="btn btn-play" onclick="event.stopPropagation(); playGame('${escapedTitle}', '${jsdelivrUrl}')"><i class="fas fa-play"></i> Play</button>
+                    <button class="btn btn-copy" onclick="event.stopPropagation(); copyUrl('${jsdelivrUrl}', '${escapedTitle}')"><i class="fas fa-copy"></i> Copy URL</button>
+                    <button class="btn btn-download" onclick="event.stopPropagation(); downloadHtml('${jsdelivrUrl}', '${game.file}', '${escapedTitle}')"><i class="fas fa-download"></i> Download</button>
+                </div>
+            `;
+          card.setAttribute("tabindex", "0");
+          card.setAttribute("role", "button");
+          card.setAttribute("aria-label", game.title);
+          card.addEventListener("click", () =>
+            playGame(escapedTitle, jsdelivrUrl),
+          );
+          card.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              playGame(escapedTitle, jsdelivrUrl);
+            }
+          });
+          baldiGrid.appendChild(card);
+        });
+      }
+
+      let currentOverviewGame = null;
+
+      function showOverview(game, title, url) {
+        const overview = document.getElementById("gameOverview");
+        const overviewImage = document.getElementById("overviewImage");
+        const overviewTitle = document.getElementById("overviewTitle");
+        const overviewDescription = document.getElementById(
+          "overviewDescription",
+        );
+        const overviewPlayBtn = document.getElementById("overviewPlayBtn");
+
+        overviewImage.src = game.icon;
+        overviewTitle.textContent = game.title;
+        overviewDescription.textContent =
+          game.description || "No description available.";
+
+        currentOverviewGame = { title, url };
+        overviewPlayBtn.onclick = () => {
+          closeOverview();
+          playGame(title, url);
+        };
+
+        overview.classList.add("active");
+      }
+
+      function closeOverview() {
+        const overview = document.getElementById("gameOverview");
+        overview.classList.remove("active");
+        currentOverviewGame = null;
+      }
+
+      const gameOverview = document.getElementById("gameOverview");
+      gameOverview.addEventListener("click", (e) => {
+        if (e.target === gameOverview) {
+          closeOverview();
+        }
+      });
+
+      renderGames();
+      renderBaldiGames();
+
+      function playGame(title, url) {
+        const wrapper = document.getElementById("fullscreenWrapper");
+        const frame = document.getElementById("gameFrame");
+        const titleEl = document.getElementById("fullscreenTitle");
+        const loading = document.getElementById("loading");
+
+        titleEl.textContent = title;
+        loading.classList.add("show");
+        wrapper.classList.add("active");
+
+        if (title === "Wizards In Shorts") {
+          frame.src = "https://wizards-in-shorts.vercel.app";
+          loading.classList.remove("show");
+          return;
+        }
+
+        if (title === "In Stars And Time") {
+          frame.src = "https://somestargame.pages.dev";
+          loading.classList.remove("show");
+          return;
+        }
+
+        fetch(url)
+          .then((response) => response.text())
+          .then((html) => {
+            if (currentBlobUrl) {
+              URL.revokeObjectURL(currentBlobUrl);
+            }
+            const blob = new Blob([html], { type: "text/html" });
+            currentBlobUrl = URL.createObjectURL(blob);
+            frame.src = currentBlobUrl;
+            loading.classList.remove("show");
+          })
+          .catch((err) => {
+            console.error("Failed to load game:", err);
+            showToast("Failed to load game");
+            loading.classList.remove("show");
+            closeFullscreen();
+          });
+      }
+
+      function closeFullscreen() {
+        const wrapper = document.getElementById("fullscreenWrapper");
+        const frame = document.getElementById("gameFrame");
+
+        wrapper.classList.remove("active");
+        frame.src = "";
+
+        if (currentBlobUrl) {
+          URL.revokeObjectURL(currentBlobUrl);
+          currentBlobUrl = null;
+        }
+      }
+
+      function toggleFullscreen() {
+        const frame = document.getElementById("gameFrame");
+        if (document.fullscreenElement) {
+          document.exitFullscreen();
+        } else {
+          frame.requestFullscreen();
+        }
+      }
+
+      function copyUrl(url, title) {
+        const urlToCopy =
+          title === "Wizards In Shorts"
+            ? "https://wizards-in-shorts.vercel.app/"
+            : url;
+        navigator.clipboard
+          .writeText(urlToCopy)
+          .then(() => {
+            showToast("URL copied to clipboard!");
+          })
+          .catch((err) => {
+            showToast("Failed to copy URL");
+            console.error("Failed to copy:", err);
+          });
+      }
+
+      function downloadHtml(url, filename, title) {
+        if (title === "Wizards In Shorts") {
+          showToast("This game cannot be downloaded");
+          return;
+        }
+        fetch(url)
+          .then((response) => response.text())
+          .then((html) => {
+            const blob = new Blob([html], { type: "text/html" });
+            const downloadUrl = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = downloadUrl;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(downloadUrl);
+            showToast("Download started!");
+          })
+          .catch((err) => {
+            showToast("Failed to download HTML");
+            console.error("Failed to download:", err);
+          });
+      }
+
+      function showToast(message) {
+        const toast = document.getElementById("toast");
+        toast.textContent = message;
+        toast.classList.add("show");
+        setTimeout(() => {
+          toast.classList.remove("show");
+        }, 2000);
+      }
+
+      let keyboardSelectedIndex = -1;
+      let keyboardSelectedGrid = null;
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          closeFullscreen();
+          closeOverview();
+          return;
+        }
+
+        if (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === "ArrowLeft" || e.key === "ArrowRight") {
+          const visibleMainCards = Array.from(gamesGrid.querySelectorAll(".game-card")).filter(
+            (card) => card.style.display !== "none",
+          );
+          const visibleBaldiCards = Array.from(baldiGrid.querySelectorAll(".game-card")).filter(
+            (card) => card.style.display !== "none",
+          );
+
+          const allVisibleCards = [...visibleMainCards, ...visibleBaldiCards];
+
+          if (allVisibleCards.length === 0) return;
+
+          if (keyboardSelectedIndex === -1) {
+            keyboardSelectedIndex = 0;
+            keyboardSelectedGrid = visibleMainCards.length > 0 ? "main" : "baldi";
+          } else {
+            const isVertical = e.key === "ArrowDown" || e.key === "ArrowUp";
+            const isForward = e.key === "ArrowDown" || e.key === "ArrowRight";
+            const isBackward = e.key === "ArrowUp" || e.key === "ArrowLeft";
+
+            if (isForward) {
+              keyboardSelectedIndex++;
+              if (keyboardSelectedIndex >= allVisibleCards.length) {
+                keyboardSelectedIndex = 0;
+              }
+            } else if (isBackward) {
+              keyboardSelectedIndex--;
+              if (keyboardSelectedIndex < 0) {
+                keyboardSelectedIndex = allVisibleCards.length - 1;
+              }
+            }
+          }
+
+          allVisibleCards.forEach((card) =>
+            card.classList.remove("keyboard-selected"),
+          );
+          allVisibleCards[keyboardSelectedIndex].classList.add("keyboard-selected");
+          allVisibleCards[keyboardSelectedIndex].focus();
+          e.preventDefault();
+        }
+      });
+
+      window.playGame = playGame;
+      window.copyUrl = copyUrl;
+      window.downloadHtml = downloadHtml;
+      window.closeFullscreen = closeFullscreen;
+      window.toggleFullscreen = toggleFullscreen;
+      window.closeOverview = closeOverview;
+    </script>
+  </body>
+</html>
