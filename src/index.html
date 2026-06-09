@@ -15,19 +15,19 @@
     />
     <style>
       :root {
-        --bg0: #070b14;
-        --bg1: #0b1220;
-        --panel: rgba(255, 255, 255, 0.04);
-        --panel2: rgba(255, 255, 255, 0.06);
-        --stroke: rgba(255, 255, 255, 0.08);
-        --stroke2: rgba(255, 255, 255, 0.14);
-        --text: #e6e6e6;
-        --muted: rgba(230, 230, 230, 0.55);
-        --muted2: rgba(230, 230, 230, 0.35);
-        --accent: #6ee7ff;
-        --accent2: #7cffa8;
-        --danger: #ff4d4d;
-        --radius: 14px;
+        --bg0: #111111;
+        --bg1: #191919;
+        --panel: rgba(255, 255, 255, 0.03);
+        --panel2: rgba(255, 255, 255, 0.055);
+        --stroke: rgba(255, 255, 255, 0.1);
+        --stroke2: rgba(255, 255, 255, 0.18);
+        --text: #d4d4d4;
+        --muted: rgba(212, 212, 212, 0.5);
+        --muted2: rgba(212, 212, 212, 0.3);
+        --accent: #c0392b;
+        --accent2: #a93226;
+        --danger: #e05555;
+        --radius: 6px;
       }
 
       * {
@@ -53,25 +53,12 @@
 
       body {
         font-family:
-          ui-sans-serif,
+          "Segoe UI",
           system-ui,
           -apple-system,
-          Segoe UI,
-          Roboto,
           Helvetica,
           Arial;
-        background:
-          radial-gradient(
-            1200px 800px at 20% 0%,
-            rgba(110, 231, 255, 0.08),
-            transparent 60%
-          ),
-          radial-gradient(
-            900px 600px at 80% 20%,
-            rgba(124, 255, 168, 0.06),
-            transparent 55%
-          ),
-          linear-gradient(180deg, var(--bg0), var(--bg1));
+        background: var(--bg0);
         min-height: 100vh;
         color: var(--text);
         padding: 28px;
@@ -133,7 +120,6 @@
       .search-input:focus {
         border-color: var(--accent);
         background: var(--panel2);
-        box-shadow: 0 0 0 3px rgba(110, 231, 255, 0.15);
       }
 
       .search-input::placeholder {
@@ -170,13 +156,13 @@
 
       .game-card:focus-visible {
         border-color: var(--accent);
-        box-shadow: 0 0 0 3px rgba(110, 231, 255, 0.2);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
         transform: translateY(-3px);
       }
 
       .game-card.keyboard-selected {
         border-color: var(--accent);
-        box-shadow: 0 0 0 3px rgba(110, 231, 255, 0.2);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
         transform: translateY(-3px);
       }
 
@@ -205,50 +191,51 @@
       .btn {
         flex: 1;
         padding: 6px 8px;
-        border-radius: 8px;
-        border: 1px solid var(--stroke);
-        background: rgba(255, 255, 255, 0.03);
+        border-radius: 3px;
+        border: 1px solid var(--stroke2);
+        background: #242424;
         color: var(--text);
         font-size: 0.75rem;
+        font-weight: 500;
         cursor: pointer;
         transition:
-          transform 0.15s ease,
-          background 0.15s ease,
-          border-color 0.15s ease,
-          box-shadow 0.15s ease;
+          background 0.1s ease,
+          border-color 0.1s ease;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         gap: 4px;
         outline: none;
+        letter-spacing: 0.3px;
       }
 
       .btn:hover {
-        transform: translateY(-1px);
-        border-color: var(--stroke2);
-        background: rgba(255, 255, 255, 0.06);
+        background: #2e2e2e;
+        border-color: rgba(255, 255, 255, 0.25);
+      }
+
+      .btn:active {
+        background: #1a1a1a;
       }
 
       .btn:focus-visible {
         border-color: var(--accent);
-        box-shadow: 0 0 0 2px rgba(110, 231, 255, 0.2);
       }
 
       .btn-play {
-        background: linear-gradient(
-          135deg,
-          rgba(110, 231, 255, 0.18),
-          rgba(124, 255, 168, 0.12)
-        );
-        border-color: rgba(110, 231, 255, 0.25);
+        background: #c0392b;
+        border-color: #c0392b;
+        color: #111;
+        font-weight: 600;
       }
 
       .btn-play:hover {
-        background: linear-gradient(
-          135deg,
-          rgba(110, 231, 255, 0.25),
-          rgba(124, 255, 168, 0.18)
-        );
+        background: #a93226;
+        border-color: #a93226;
+      }
+
+      .btn-play:active {
+        background: #922b21;
       }
 
       .btn-copy {
@@ -257,7 +244,7 @@
 
       .btn-download {
         color: var(--accent);
-        border-color: rgba(110, 231, 255, 0.2);
+        border-color: rgba(192, 57, 43, 0.25);
       }
 
       .fullscreen-wrapper {
@@ -299,21 +286,33 @@
       }
 
       .btn-close {
-        background: rgba(255, 77, 77, 0.15);
-        border: 1px solid rgba(255, 77, 77, 0.35);
-        color: #ffb3b3;
-        padding: 8px 12px;
-        border-radius: 10px;
+        background: #2a1a1a;
+        border: 1px solid rgba(224, 85, 85, 0.4);
+        color: #e07070;
+        padding: 7px 12px;
+        border-radius: 3px;
         cursor: pointer;
+        font-size: 0.8rem;
+        transition: background 0.1s ease;
+      }
+
+      .btn-close:hover {
+        background: #3a1f1f;
       }
 
       .btn-fullscreen {
-        background: rgba(255, 255, 255, 0.06);
-        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: #242424;
+        border: 1px solid var(--stroke2);
         color: var(--text);
-        padding: 8px 12px;
-        border-radius: 10px;
+        padding: 7px 12px;
+        border-radius: 3px;
         cursor: pointer;
+        font-size: 0.8rem;
+        transition: background 0.1s ease;
+      }
+
+      .btn-fullscreen:hover {
+        background: #2e2e2e;
       }
 
       .toast {
@@ -422,7 +421,6 @@
 
       .section-header:focus-visible {
         border-color: var(--accent);
-        box-shadow: 0 0 0 3px rgba(110, 231, 255, 0.15);
         outline: none;
       }
 
@@ -457,119 +455,11 @@
         max-height: 2000px;
         opacity: 1;
       }
-
-      .game-overview {
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.85);
-        display: none;
-        justify-content: center;
-        align-items: center;
-        z-index: 10000;
-        padding: 20px;
-      }
-
-      .game-overview.active {
-        display: flex;
-      }
-
-      .overview-content {
-        background: var(--bg1);
-        border: 1px solid var(--stroke2);
-        border-radius: var(--radius);
-        max-width: 600px;
-        width: 100%;
-        max-height: 90vh;
-        overflow-y: auto;
-        padding: 24px;
-        position: relative;
-      }
-
-      .overview-close {
-        position: absolute;
-        top: 16px;
-        right: 16px;
-        background: rgba(255, 77, 77, 0.15);
-        border: 1px solid rgba(255, 77, 77, 0.35);
-        color: #ffb3b3;
-        padding: 8px 12px;
-        border-radius: 8px;
-        cursor: pointer;
-        font-size: 0.9rem;
-        transition: background 0.15s ease;
-      }
-
-      .overview-close:hover {
-        background: rgba(255, 77, 77, 0.25);
-      }
-
-      .overview-image {
-        width: 100%;
-        height: 350px;
-        object-fit: contain;
-        border-radius: 12px;
-        margin-bottom: 20px;
-        background: rgba(0, 0, 0, 0.25);
-      }
-
-      .overview-title {
-        font-size: 1.5rem;
-        font-weight: 650;
-        color: #fff;
-        margin-bottom: 12px;
-      }
-
-      .overview-description {
-        color: var(--muted);
-        font-size: 0.95rem;
-        line-height: 1.6;
-        margin-bottom: 20px;
-      }
-
-      .overview-play-btn {
-        width: 100%;
-        padding: 14px;
-        background: linear-gradient(
-          135deg,
-          rgba(110, 231, 255, 0.2),
-          rgba(124, 255, 168, 0.15)
-        );
-        border: 1px solid rgba(110, 231, 255, 0.3);
-        border-radius: 12px;
-        color: var(--accent);
-        font-size: 1rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.18s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        outline: none;
-      }
-
-      .overview-play-btn:hover {
-        background: linear-gradient(
-          135deg,
-          rgba(110, 231, 255, 0.3),
-          rgba(124, 255, 168, 0.25)
-        );
-        border-color: rgba(110, 231, 255, 0.4);
-        transform: translateY(-2px);
-      }
-
-      .overview-play-btn:focus-visible {
-        box-shadow: 0 0 0 3px rgba(110, 231, 255, 0.3);
-      }
-
-      .overview-close:focus-visible {
-        box-shadow: 0 0 0 3px rgba(255, 77, 77, 0.3);
-      }
     </style>
   </head>
   <body>
     <div class="container">
-      <h1><i class="fas fa-gamepad"></i> Reeyuki WebPorts</h1>
+      <h1><i class="fas fa-gamepad"></i> Reeyuki Webports</h1>
       <div class="stats"><span id="gameCount">0</span> games available</div>
 
       <div class="search-container">
@@ -583,12 +473,12 @@
 
       <div class="games-grid" id="gamesGrid"></div>
 
-      <div class="section-header collapsed" id="baldiHeader">
+      <div class="section-header" id="baldiHeader">
         <span class="section-title">Baldi Mods</span>
         <i class="fas fa-chevron-down section-icon"></i>
       </div>
 
-      <div class="section-content collapsed" id="baldiContent">
+      <div class="section-content" id="baldiContent">
         <div class="games-grid" id="baldiGrid"></div>
       </div>
     </div>
@@ -621,26 +511,11 @@
       <a href="https://reeyuki.nekoweb.org" target="_blank">Visit My Site</a>
     </div>
 
-    <div class="game-overview" id="gameOverview">
-      <div class="overview-content">
-        <button class="overview-close" onclick="closeOverview()">
-          <i class="fas fa-times"></i> Close
-        </button>
-        <img class="overview-image" id="overviewImage" src="" alt="Game" />
-        <h2 class="overview-title" id="overviewTitle">Game Title</h2>
-        <p class="overview-description" id="overviewDescription">
-          Game description goes here.
-        </p>
-        <button class="overview-play-btn" id="overviewPlayBtn">
-          <i class="fas fa-play"></i> Play Now
-        </button>
-      </div>
-    </div>
-
     <script type="module">
       import angryBirds2Icon from "./icons/angryBirds2.webp";
       import slimeRanchericon from "./icons/slime.webp";
       import tabsIcon from "./icons/tabs.webp";
+      import catFishIcon from "./icons/cat.webp";
       import baldiBaldsIcon from "./icons/baldiBalds.webp";
       import baldisBasicsTeachingOnTwosIcon from "./icons/baldisBasicsTeachingOnTwos.webp";
       import inscryptionIcon from "./icons/inscryption.webp";
@@ -662,6 +537,7 @@
       import slenderinaIcon from "./icons/slenderina.webp";
       import wizardsIcon from "./icons/wizard.webp";
       import fniaIcon from "./icons/fnia.webp";
+      import helltakerIcon from "./icons/helltaker.webp";
 
       let currentBlobUrl = null;
 
@@ -678,84 +554,100 @@
           file: "slime.html",
           icon: slimeRanchericon,
           description:
-            "Explore a vibrant, alien world as Beatrix LeBeau, a rancher who's trying to make a living wrangling slimes. Build your ranch, discover new slime species, and uncover the mysteries of the Far, Far Range.",
+            "Slime Rancher is the tale of Beatrix LeBeau, a plucky, young rancher who sets out for a life a thousand light years away from Earth on the ‘Far, Far Range’ where she tries her hand at making a living wrangling slimes. ",
         },
         {
           title: "TABS",
           file: "tabs.html",
           icon: tabsIcon,
           description:
-            "Totally Accurate Battle Simulator - Watch wacky armies battle it out in hilarious physics-based combat. Create your own battles and watch the chaos unfold!",
+            "Be the leader of wobblers from ancient lands, spooky places, and fantasy worlds. Watch them fight in simulations made with the wobbliest physics system ever created",
+        },
+        {
+          title: "Cat Goes Fishing",
+          file: "catfish.html",
+          icon: catFishIcon,
+          description:
+            "Start out on an island with a basic rod. Progress into a radar-wielding master fisher-cat scouring the sea for the biggest and baddest fish. Each fish has unique behaviors that you will learn to exploit as you tailor your arsenal of fishing rods to suit your style of play. Mrrrow!",
         },
         {
           title: "Inscryption",
           file: "inscryption.html",
           icon: inscryptionIcon,
           description:
-            "A dark, atmospheric card game with elements of escape-room puzzles and psychological horror. Build decks, make sacrifices, and uncover the secrets of the cabin.",
+            "Inscryption is an inky black card-based odyssey that blends the deckbuilding roguelike, escape-room style puzzles, and psychological horror into a blood-laced smoothie. Darker still are the secrets inscrybed upon the cards... ",
         },
         {
           title: "Lobotomy Corporation",
           file: "lobotomy.html",
           icon: lobotomyIcon,
           description:
-            "Manage a facility containing various supernatural creatures. Balance containment, energy production, and employee safety in this challenging management simulation.",
+            "A roguelite monster-management simulation inspired by the likes of the SCP Foundation, Cabin in the Woods, and Warehouse 13. Order your employees to perform work with the creatures and watch as it unfolds; harness greater energy, and expand the facility ",
         },
         {
           title: "Night In The Woods",
           file: "nightwoods.html",
           icon: nightIcon,
           description:
-            "A narrative-driven adventure game following Mae, a college dropout who returns to her hometown. Explore, reconnect with friends, and uncover the mysteries lurking in the woods.",
+            "NIGHT IN THE WOODS is an adventure game focused on exploration, story, and character, featuring dozens of characters to meet and lots to do across a lush, vibrant world.",
         },
         {
           title: "Plague Inc Evolved",
           file: "plague.html",
           icon: plagueIcon,
           description:
-            "Create and evolve a pathogen to infect and wipe out humanity. Strategy and planning are key as you adapt to countermeasures and spread your plague across the globe.",
+            "Plague Inc: Evolved is a unique mix of high strategy and terrifyingly realistic simulation. Your pathogen has just infected 'Patient Zero' - now you must bring about the end of human history by evolving a deadly, global Plague whilst adapting against everything humanity can do to defend itself. ",
         },
         {
           title: "Five Nights At Frickbears 3",
           file: "frickbears.html",
           icon: frickIcon,
           description:
-            "Survive five nights at a haunted pizza restaurant. Monitor security cameras, manage power, and avoid the animatronic characters that come to life at night.",
+            "Five Nights at Frickbear's 3 is an indie 2.5D horror survival fangame directed by SpookyRick, inspired by Scott Cawthon's Five Nights at Freddy's franchise. It is a stylized fangame with a goofy art style, blending 2D and 3D assets. Its main gimmick allows players to continuously change and expand their nights with animatronics of their choosing.",
         },
         {
           title: "Suicide Guy",
           file: "suicideGuy.html",
           icon: suicideGuyIcon,
           description:
-            "A puzzle-platformer where you play as a guy trying to wake up from a coma. Navigate surreal dreamscapes and solve puzzles to return to consciousness.",
+            "Suicide Guy Deluxe Plus is the surreal puzzle game set in the dreams of its protagonist. Will you be able to save the thing you love most and overcome the neverending whirlwind of nightmares? Now in a new shiny edition. ",
         },
         {
           title: "Youtubers Life Omg",
           file: "ytlifeomg.html",
           icon: ytIcon,
           description:
-            "Live the life of a content creator! Create videos, grow your channel, manage your social life, and become the ultimate YouTube star in this life simulation game.",
+            "Become the most successful youtuber on the planet! Create videos, get subscribers, attend events, interact with your fans… and grow your channel. Live a youtuber’s life! ",
         },
         {
           title: "Whos Your Daddy",
           file: "daddy.html",
           icon: daddyIcon,
           description:
-            "A chaotic multiplayer game where one player is the dad trying to baby-proof the house, while the other is the baby trying to end it all in increasingly creative ways.",
+            " Who's Your Daddy is a casual multiplayer game featuring a clueless father attempting to prevent his infant son from certain death. Play with up to 7 of your friends, and test your parenting skills in a competitive setup with wacky physics and over 67 potentially ominous household items.",
         },
         {
           title: "In Stars And Time",
           file: "star.html",
           icon: starsIcon,
           description:
-            "A time-loop RPG adventure. Relive the same two days over and over, making different choices to save your friends and prevent the end of the world.",
+            "Live with the ever-present burden of being trapped in a time loop only you can know about in this turn-based RPG. Create a better future for you and your friends. Find hope where there is none left. Pray to the stars and free yourself from time. ",
+        },
+        {
+          title: "Helltaker",
+          file: "helltaker.html",
+          icon: helltakerIcon,
+          description:
+            "Helltaker is a short game about sharply dressed demon girls.",
         },
         {
           title: "Slenderina The Cellar",
           file: "slenderina.html",
           icon: slenderinaIcon,
-          description:
-            "A horror game where you must escape from Slenderina's haunted cellar. Solve puzzles, avoid the terrifying entity, and find your way out before it's too late.",
+          description: `This is the story of Slendrina The Cellar. Now she has become more evil than before and hates it when someone intruding on her territory. She will do anything to stop you. Whatever you do .... do not look back!
+              Try to find 8 missing old books in the dark cellar and then run to the exit.
+              You also need to find keys to open certain doors.
+              Look everywhere, for they could be anywhere.`,
         },
         {
           title: "Five Nights In Anime 3D",
@@ -768,7 +660,7 @@
           file: "wizards.html",
           icon: wizardsIcon,
           description:
-            "A magical adventure featuring wizards in... shorts! Cast spells, explore mystical lands, and embark on a quirky journey filled with humor and wonder.",
+            "Wizards in Shorts is a fast-paced online arena shooter. Blast your friends with fireballs, electricity, puffer fish, and mysterious blue orbs. ",
         },
       ];
 
@@ -882,12 +774,12 @@
           card.setAttribute("role", "button");
           card.setAttribute("aria-label", game.title);
           card.addEventListener("click", () =>
-            showOverview(game, escapedTitle, jsdelivrUrl),
+            playGame(escapedTitle, jsdelivrUrl),
           );
           card.addEventListener("keydown", (e) => {
             if (e.key === "Enter" || e.key === " ") {
               e.preventDefault();
-              showOverview(game, escapedTitle, jsdelivrUrl);
+              playGame(escapedTitle, jsdelivrUrl);
             }
           });
           gamesGrid.appendChild(card);
@@ -928,44 +820,6 @@
           baldiGrid.appendChild(card);
         });
       }
-
-      let currentOverviewGame = null;
-
-      function showOverview(game, title, url) {
-        const overview = document.getElementById("gameOverview");
-        const overviewImage = document.getElementById("overviewImage");
-        const overviewTitle = document.getElementById("overviewTitle");
-        const overviewDescription = document.getElementById(
-          "overviewDescription",
-        );
-        const overviewPlayBtn = document.getElementById("overviewPlayBtn");
-
-        overviewImage.src = game.icon;
-        overviewTitle.textContent = game.title;
-        overviewDescription.textContent =
-          game.description || "No description available.";
-
-        currentOverviewGame = { title, url };
-        overviewPlayBtn.onclick = () => {
-          closeOverview();
-          playGame(title, url);
-        };
-
-        overview.classList.add("active");
-      }
-
-      function closeOverview() {
-        const overview = document.getElementById("gameOverview");
-        overview.classList.remove("active");
-        currentOverviewGame = null;
-      }
-
-      const gameOverview = document.getElementById("gameOverview");
-      gameOverview.addEventListener("click", (e) => {
-        if (e.target === gameOverview) {
-          closeOverview();
-        }
-      });
 
       renderGames();
       renderBaldiGames();
@@ -1089,7 +943,6 @@
       document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") {
           closeFullscreen();
-          closeOverview();
           return;
         }
 
@@ -1148,7 +1001,6 @@
       window.downloadHtml = downloadHtml;
       window.closeFullscreen = closeFullscreen;
       window.toggleFullscreen = toggleFullscreen;
-      window.closeOverview = closeOverview;
     </script>
   </body>
 </html>
