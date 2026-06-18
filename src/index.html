@@ -503,15 +503,31 @@
 
     <div class="footer">
       Hello. I started webporting in april 2026 and got somehow addicted.
-      <section class="info-panel" style="border: 1px solid rgba(255, 62, 62, 0.2); background: rgba(255, 62, 62, 0.02);">
+      <section
+        class="info-panel"
+        style="
+          border: 1px solid rgba(255, 62, 62, 0.2);
+          background: rgba(255, 62, 62, 0.02);
+        "
+      >
         <h3>DMCA & Intellectual Property Notice</h3>
-        <p style="font-size: 0.9rem;">
-            This website is a non-commercial, non-profit technical archive intended strictly for software preservation, historical research, and educational demonstration. No assets are monetized, and no access fees are charged.
+        <p style="font-size: 0.9rem">
+          This website is a non-commercial, non-profit technical archive
+          intended strictly for software preservation, historical research, and
+          educational demonstration. No assets are monetized, and no access fees
+          are charged.
         </p>
-        <p style="font-size: 0.9rem; margin-bottom: 0;">
-            We respect the intellectual property rights of all original creators and game developers. If you are the official copyright owner of any materials displayed or deployed on this technical demo and object to its archival presentation, please submit a formal or informal removal request directly to <strong style="color: var(--text-color);">reeyukii@proton.me</strong>. Verified requests will be processed and completely removed within 3 business days.
+        <p style="font-size: 0.9rem; margin-bottom: 0">
+          We respect the intellectual property rights of all original creators
+          and game developers. If you are the official copyright owner of any
+          materials displayed or deployed on this technical demo and object to
+          its archival presentation, please submit a formal or informal removal
+          request directly to
+          <strong style="color: var(--text-color)">reeyukii@proton.me</strong>.
+          Verified requests will be processed and completely removed within 3
+          business days.
         </p>
-    </section>
+      </section>
       <a href="https://yukios.netlify.app" target="_blank"
         >Explore YukiOS for more games!</a
       >
@@ -763,77 +779,84 @@
 
       function renderGames() {
         gamesGrid.innerHTML = "";
+
         games.forEach((game) => {
-          const jsdelivrUrl = CDN_BASE + game.file;
-          const githubUrl = GITHUB_BASE + game.file;
+          const gameUrl = /^https?:\/\//i.test(game.file)
+            ? game.file
+            : CDN_BASE + game.file;
+
           const escapedTitle = game.title.replace(/'/g, "\\'");
 
           const card = document.createElement("div");
           card.className = "game-card";
           card.style.cursor = "pointer";
           card.innerHTML = `
-                <img class="game-icon" src="${game.icon}" alt="${game.title}" />
-                <div class="game-title">${game.title}</div>
-                <div class="game-actions">
-                    <button class="btn btn-play" onclick="event.stopPropagation(); playGame('${escapedTitle}', '${jsdelivrUrl}')"><i class="fas fa-play"></i> Play</button>
-                    <button class="btn btn-copy" onclick="event.stopPropagation(); copyUrl('${jsdelivrUrl}', '${escapedTitle}')"><i class="fas fa-copy"></i> Copy URL</button>
-                    <button class="btn btn-download" onclick="event.stopPropagation(); downloadHtml('${jsdelivrUrl}', '${game.file}', '${escapedTitle}')"><i class="fas fa-download"></i> Download</button>
-                </div>
-            `;
+      <img class="game-icon" src="${game.icon}" alt="${game.title}" />
+      <div class="game-title">${game.title}</div>
+      <div class="game-actions">
+        <button class="btn btn-play" onclick="event.stopPropagation(); playGame('${escapedTitle}', '${gameUrl}')"><i class="fas fa-play"></i> Play</button>
+        <button class="btn btn-copy" onclick="event.stopPropagation(); copyUrl('${gameUrl}', '${escapedTitle}')"><i class="fas fa-copy"></i> Copy URL</button>
+        <button class="btn btn-download" onclick="event.stopPropagation(); downloadHtml('${gameUrl}', '${game.file}', '${escapedTitle}')"><i class="fas fa-download"></i> Download</button>
+      </div>
+    `;
+
           card.setAttribute("tabindex", "0");
           card.setAttribute("role", "button");
           card.setAttribute("aria-label", game.title);
-          card.addEventListener("click", () =>
-            playGame(escapedTitle, jsdelivrUrl),
-          );
+
+          card.addEventListener("click", () => playGame(escapedTitle, gameUrl));
+
           card.addEventListener("keydown", (e) => {
             if (e.key === "Enter" || e.key === " ") {
               e.preventDefault();
-              playGame(escapedTitle, jsdelivrUrl);
+              playGame(escapedTitle, gameUrl);
             }
           });
+
           gamesGrid.appendChild(card);
         });
       }
-
       function renderBaldiGames() {
         baldiGrid.innerHTML = "";
+
         baldiGames.forEach((game) => {
-          const jsdelivrUrl = CDN_BASE + game.file;
-          const githubUrl = GITHUB_BASE + game.file;
+          const gameUrl = /^https?:\/\//i.test(game.file)
+            ? game.file
+            : CDN_BASE + game.file;
+
           const escapedTitle = game.title.replace(/'/g, "\\'");
 
           const card = document.createElement("div");
           card.className = "game-card";
           card.style.cursor = "pointer";
           card.innerHTML = `
-                <img class="game-icon" src="${game.icon}" alt="${game.title}" />
-                <div class="game-title">${game.title}</div>
-                <div class="game-actions">
-                    <button class="btn btn-play" onclick="event.stopPropagation(); playGame('${escapedTitle}', '${jsdelivrUrl}')"><i class="fas fa-play"></i> Play</button>
-                    <button class="btn btn-copy" onclick="event.stopPropagation(); copyUrl('${jsdelivrUrl}', '${escapedTitle}')"><i class="fas fa-copy"></i> Copy URL</button>
-                    <button class="btn btn-download" onclick="event.stopPropagation(); downloadHtml('${jsdelivrUrl}', '${game.file}', '${escapedTitle}')"><i class="fas fa-download"></i> Download</button>
-                </div>
-            `;
+      <img class="game-icon" src="${game.icon}" alt="${game.title}" />
+      <div class="game-title">${game.title}</div>
+      <div class="game-actions">
+        <button class="btn btn-play" onclick="event.stopPropagation(); playGame('${escapedTitle}', '${gameUrl}')"><i class="fas fa-play"></i> Play</button>
+        <button class="btn btn-copy" onclick="event.stopPropagation(); copyUrl('${gameUrl}', '${escapedTitle}')"><i class="fas fa-copy"></i> Copy URL</button>
+        <button class="btn btn-download" onclick="event.stopPropagation(); downloadHtml('${gameUrl}', '${game.file}', '${escapedTitle}')"><i class="fas fa-download"></i> Download</button>
+      </div>
+    `;
+
           card.setAttribute("tabindex", "0");
           card.setAttribute("role", "button");
           card.setAttribute("aria-label", game.title);
-          card.addEventListener("click", () =>
-            playGame(escapedTitle, jsdelivrUrl),
-          );
+
+          card.addEventListener("click", () => playGame(escapedTitle, gameUrl));
+
           card.addEventListener("keydown", (e) => {
             if (e.key === "Enter" || e.key === " ") {
               e.preventDefault();
-              playGame(escapedTitle, jsdelivrUrl);
+              playGame(escapedTitle, gameUrl);
             }
           });
+
           baldiGrid.appendChild(card);
         });
       }
-
       renderGames();
       renderBaldiGames();
-
       function playGame(title, url) {
         const wrapper = document.getElementById("fullscreenWrapper");
         const frame = document.getElementById("gameFrame");
@@ -844,28 +867,32 @@
         loading.classList.add("show");
         wrapper.classList.add("active");
 
-        if (title === "Wizards In Shorts") {
-          frame.src = "https://wizards-in-shorts.vercel.app";
-          loading.classList.remove("show");
-          return;
+        if (currentBlobUrl) {
+          URL.revokeObjectURL(currentBlobUrl);
+          currentBlobUrl = null;
         }
 
-        if (title === "In Stars And Time") {
-          frame.src = "https://somestargame.pages.dev";
+        frame.onload = () => {
           loading.classList.remove("show");
+        };
+
+        frame.onerror = () => {
+          loading.classList.remove("show");
+          showToast("Failed to load game");
+          closeFullscreen();
+        };
+
+        if (/^https?:\/\//i.test(url)) {
+          frame.src = url;
           return;
         }
 
         fetch(url)
           .then((response) => response.text())
           .then((html) => {
-            if (currentBlobUrl) {
-              URL.revokeObjectURL(currentBlobUrl);
-            }
             const blob = new Blob([html], { type: "text/html" });
             currentBlobUrl = URL.createObjectURL(blob);
             frame.src = currentBlobUrl;
-            loading.classList.remove("show");
           })
           .catch((err) => {
             console.error("Failed to load game:", err);
@@ -874,7 +901,6 @@
             closeFullscreen();
           });
       }
-
       function closeFullscreen() {
         const wrapper = document.getElementById("fullscreenWrapper");
         const frame = document.getElementById("gameFrame");
