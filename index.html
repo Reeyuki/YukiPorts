@@ -14,18 +14,26 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     />
     <style>
+      @font-face {
+        font-family: "Monocraft";
+        src: url("https://cdn.jsdelivr.net/gh/IdreesInc/Monocraft@main/dist/Monocraft-ttf/Monocraft.ttf")
+          format("truetype");
+        font-weight: normal;
+        font-style: normal;
+      }
+
       :root {
-        --bg0: #111111;
-        --bg1: #191919;
+        --bg0: #0b0e10;
+        --bg1: #0f1417;
         --panel: rgba(255, 255, 255, 0.03);
         --panel2: rgba(255, 255, 255, 0.055);
         --stroke: rgba(255, 255, 255, 0.1);
         --stroke2: rgba(255, 255, 255, 0.18);
-        --text: #d4d4d4;
-        --muted: rgba(212, 212, 212, 0.5);
-        --muted2: rgba(212, 212, 212, 0.3);
-        --accent: #c0392b;
-        --accent2: #a93226;
+        --text: #cfd8dc;
+        --muted: rgba(207, 216, 220, 0.5);
+        --muted2: rgba(207, 216, 220, 0.3);
+        --accent: #66e6c8;
+        --accent2: #d96bb3;
         --danger: #e05555;
         --radius: 6px;
       }
@@ -52,12 +60,7 @@
       }
 
       body {
-        font-family:
-          "Segoe UI",
-          system-ui,
-          -apple-system,
-          Helvetica,
-          Arial;
+        font-family: "Monocraft", monospace;
         background: var(--bg0);
         min-height: 100vh;
         color: var(--text);
@@ -223,19 +226,19 @@
       }
 
       .btn-play {
-        background: #c0392b;
-        border-color: #c0392b;
-        color: #111;
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #000;
         font-weight: 600;
       }
 
       .btn-play:hover {
-        background: #a93226;
-        border-color: #a93226;
+        background: var(--accent2);
+        border-color: var(--accent2);
       }
 
       .btn-play:active {
-        background: #922b21;
+        background: #b85a8f;
       }
 
       .btn-copy {
@@ -244,7 +247,7 @@
 
       .btn-download {
         color: var(--accent);
-        border-color: rgba(192, 57, 43, 0.25);
+        border-color: rgba(102, 230, 200, 0.25);
       }
 
       .fullscreen-wrapper {
@@ -286,9 +289,9 @@
       }
 
       .btn-close {
-        background: #2a1a1a;
-        border: 1px solid rgba(224, 85, 85, 0.4);
-        color: #e07070;
+        background: #1a1a2a;
+        border: 1px solid rgba(217, 107, 179, 0.4);
+        color: var(--accent2);
         padding: 7px 12px;
         border-radius: 3px;
         cursor: pointer;
@@ -297,7 +300,7 @@
       }
 
       .btn-close:hover {
-        background: #3a1f1f;
+        background: #2a1a2e;
       }
 
       .btn-fullscreen {
