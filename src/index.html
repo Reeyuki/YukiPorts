@@ -178,6 +178,16 @@
         padding: 8px;
       }
 
+      .wip-placeholder {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--muted2);
+        letter-spacing: 0.1em;
+      }
+
       .game-title {
         font-size: 1.05rem;
         font-weight: 600;
@@ -458,6 +468,48 @@
         max-height: 2000px;
         opacity: 1;
       }
+
+      .image-preview {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.92);
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        padding: 20px;
+      }
+
+      .image-preview.active {
+        display: flex;
+      }
+
+      .image-preview-header {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        padding: 12px 16px;
+        background: rgba(0, 0, 0, 0.75);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .image-preview-title {
+        font-size: 1rem;
+        color: #fff;
+        opacity: 0.9;
+      }
+
+      .image-preview-img {
+        max-width: 90vw;
+        max-height: 85vh;
+        object-fit: contain;
+        border-radius: 4px;
+      }
     </style>
   </head>
   <body>
@@ -476,13 +528,22 @@
 
       <div class="games-grid" id="gamesGrid"></div>
 
-      <div class="section-header" id="baldiHeader">
+      <div class="section-header collapsed" id="baldiHeader">
         <span class="section-title">Baldi Mods</span>
         <i class="fas fa-chevron-down section-icon"></i>
       </div>
 
-      <div class="section-content" id="baldiContent">
+      <div class="section-content collapsed" id="baldiContent">
         <div class="games-grid" id="baldiGrid"></div>
+      </div>
+
+      <div class="section-header" id="wipHeader">
+        <span class="section-title">WIP</span>
+        <i class="fas fa-chevron-down section-icon"></i>
+      </div>
+
+      <div class="section-content" id="wipContent">
+        <div class="games-grid" id="wipGrid"></div>
       </div>
     </div>
 
@@ -503,6 +564,14 @@
 
     <div class="toast" id="toast">URL copied to clipboard!</div>
     <div class="loading" id="loading">Loading</div>
+
+    <div class="image-preview" id="imagePreview">
+      <div class="image-preview-header">
+        <span class="image-preview-title" id="imagePreviewTitle"></span>
+        <button class="btn-close" onclick="closeImagePreview()"><i class="fas fa-times"></i> Close</button>
+      </div>
+      <img class="image-preview-img" id="imagePreviewImg" src="" alt="" />
+    </div>
 
     <div class="footer">
       Hello. I started webporting in april 2026 and got somehow addicted.
@@ -720,23 +789,44 @@
         },
       ];
 
+      const MEDIA_BASE = "https://cdn.jsdelivr.net/gh/Reeyuki/YukiPorts@main/media/";
+
+      const wipGames = [
+        { title: "PTTR", file: "", icon: ICON_BASE + "pttr.webp" },
+        { title: "60 Seconds! Reatomized", file: "", icon: ICON_BASE + "60secondsreatomized.webp" },
+        { title: "Casualties Unknown", file: "", icon: ICON_BASE + "casualtiesunknown.webp" },
+        { title: "Gambling With Friends", file: "", wip: true },
+        { title: "Beholder", file: "", wip: true },
+        { title: "Subnautica", file: "", wip: true },
+        { title: "The Forest", file: "", video: true, parts: ["theforest.mp4.part_aa", "theforest.mp4.part_ab", "theforest.mp4.part_ac", "theforest.mp4.part_ad", "theforest.mp4.part_ae"] },
+        { title: "Duck Season", file: "", icon: ICON_BASE + "duckseason.webp" },
+      ];
+
       const CDN_BASE =
         "https://cdn.jsdelivr.net/gh/Reeyuki/YukiPorts@main/html/";
       const GITHUB_BASE =
         "https://github.com/Reeyuki/YukiPorts/tree/main/html/";
 
       document.getElementById("gameCount").textContent =
-        games.length + baldiGames.length;
+        games.length + baldiGames.length + wipGames.length;
 
       const gamesGrid = document.getElementById("gamesGrid");
       const baldiGrid = document.getElementById("baldiGrid");
+      const wipGrid = document.getElementById("wipGrid");
       const searchInput = document.getElementById("searchInput");
       const baldiHeader = document.getElementById("baldiHeader");
       const baldiContent = document.getElementById("baldiContent");
+      const wipHeader = document.getElementById("wipHeader");
+      const wipContent = document.getElementById("wipContent");
 
       baldiHeader.addEventListener("click", () => {
         baldiHeader.classList.toggle("collapsed");
         baldiContent.classList.toggle("collapsed");
+      });
+
+      wipHeader.addEventListener("click", () => {
+        wipHeader.classList.toggle("collapsed");
+        wipContent.classList.toggle("collapsed");
       });
 
       searchInput.addEventListener("input", (e) => {
@@ -756,6 +846,13 @@
           card.style.display = matches ? "flex" : "none";
         });
 
+        const wipCards = wipGrid.querySelectorAll(".game-card");
+        wipCards.forEach((card, index) => {
+          const game = wipGames[index];
+          const matches = game.title.toLowerCase().includes(searchTerm);
+          card.style.display = matches ? "flex" : "none";
+        });
+
         if (
           searchTerm &&
           baldiGames.some((game) =>
@@ -764,6 +861,16 @@
         ) {
           baldiHeader.classList.remove("collapsed");
           baldiContent.classList.remove("collapsed");
+        }
+
+        if (
+          searchTerm &&
+          wipGames.some((game) =>
+            game.title.toLowerCase().includes(searchTerm),
+          )
+        ) {
+          wipHeader.classList.remove("collapsed");
+          wipContent.classList.remove("collapsed");
         }
       });
 
@@ -845,8 +952,84 @@
           baldiGrid.appendChild(card);
         });
       }
+      function loadVideoParts(parts) {
+        const urls = parts.map(p => MEDIA_BASE + p);
+        return Promise.all(urls.map(url =>
+          fetch(url).then(r => r.arrayBuffer())
+        )).then(buffers => {
+          const blob = new Blob(buffers, { type: "video/mp4" });
+          return URL.createObjectURL(blob);
+        });
+      }
+
+      function renderWipGames() {
+        wipGrid.innerHTML = "";
+
+        wipGames.forEach((game) => {
+          const card = document.createElement("div");
+          card.className = "game-card";
+          card.style.cursor = "pointer";
+          card.setAttribute("tabindex", "0");
+          card.setAttribute("role", "button");
+          card.setAttribute("aria-label", game.title);
+
+          if (game.video) {
+            card.innerHTML = `
+      <video class="game-icon" id="video-${game.title.replace(/\s/g, "")}" muted loop playsinline poster="" preload="none"></video>
+      <div class="game-title">${game.title}</div>
+    `;
+            const video = card.querySelector("video");
+            card.addEventListener("click", () => {
+              if (video.dataset.loaded) {
+                video.muted = false;
+                video.play();
+                return;
+              }
+              loadVideoParts(game.parts).then(url => {
+                video.src = url;
+                video.dataset.loaded = "1";
+                video.muted = false;
+                video.play();
+              });
+            });
+            card.addEventListener("keydown", (e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                card.click();
+              }
+            });
+          } else if (game.wip) {
+            card.innerHTML = `
+      <div class="game-icon wip-placeholder">WIP</div>
+      <div class="game-title">${game.title}</div>
+    `;
+            card.addEventListener("click", () => showImagePreview(game.title, ""));
+            card.addEventListener("keydown", (e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                showImagePreview(game.title, "");
+              }
+            });
+          } else {
+            card.innerHTML = `
+      <img class="game-icon" src="${game.icon}" alt="${game.title}" />
+      <div class="game-title">${game.title}</div>
+    `;
+            card.addEventListener("click", () => showImagePreview(game.title, game.icon));
+            card.addEventListener("keydown", (e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                showImagePreview(game.title, game.icon);
+              }
+            });
+          }
+
+          wipGrid.appendChild(card);
+        });
+      }
       renderGames();
       renderBaldiGames();
+      renderWipGames();
       function playGame(title, url) {
         const wrapper = document.getElementById("fullscreenWrapper");
         const frame = document.getElementById("gameFrame");
@@ -954,6 +1137,24 @@
           });
       }
 
+      function showImagePreview(title, src) {
+        const preview = document.getElementById("imagePreview");
+        const img = document.getElementById("imagePreviewImg");
+        const titleEl = document.getElementById("imagePreviewTitle");
+        titleEl.textContent = title;
+        img.src = src;
+        img.alt = title;
+        preview.classList.add("active");
+      }
+
+      function closeImagePreview() {
+        const preview = document.getElementById("imagePreview");
+        const img = document.getElementById("imagePreviewImg");
+        preview.classList.remove("active");
+        img.src = "";
+        img.alt = "";
+      }
+
       function showToast(message) {
         const toast = document.getElementById("toast");
         toast.textContent = message;
@@ -969,6 +1170,7 @@
       document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") {
           closeFullscreen();
+          closeImagePreview();
           return;
         }
 
@@ -984,8 +1186,11 @@
           const visibleBaldiCards = Array.from(
             baldiGrid.querySelectorAll(".game-card"),
           ).filter((card) => card.style.display !== "none");
+          const visibleWipCards = Array.from(
+            wipGrid.querySelectorAll(".game-card"),
+          ).filter((card) => card.style.display !== "none");
 
-          const allVisibleCards = [...visibleMainCards, ...visibleBaldiCards];
+          const allVisibleCards = [...visibleMainCards, ...visibleBaldiCards, ...visibleWipCards];
 
           if (allVisibleCards.length === 0) return;
 
@@ -1027,6 +1232,7 @@
       window.downloadHtml = downloadHtml;
       window.closeFullscreen = closeFullscreen;
       window.toggleFullscreen = toggleFullscreen;
+      window.closeImagePreview = closeImagePreview;
     </script>
   </body>
 </html>
