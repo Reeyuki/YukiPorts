@@ -568,7 +568,9 @@
     <div class="image-preview" id="imagePreview">
       <div class="image-preview-header">
         <span class="image-preview-title" id="imagePreviewTitle"></span>
-        <button class="btn-close" onclick="closeImagePreview()"><i class="fas fa-times"></i> Close</button>
+        <button class="btn-close" onclick="closeImagePreview()">
+          <i class="fas fa-times"></i> Close
+        </button>
       </div>
       <img class="image-preview-img" id="imagePreviewImg" src="" alt="" />
     </div>
@@ -789,16 +791,36 @@
         },
       ];
 
-      const MEDIA_BASE = "https://cdn.jsdelivr.net/gh/Reeyuki/YukiPorts@main/media/";
+      const MEDIA_BASE =
+        "https://cdn.jsdelivr.net/gh/Reeyuki/YukiPorts@main/media/";
 
       const wipGames = [
         { title: "PTTR", file: "", icon: ICON_BASE + "pttr.webp" },
-        { title: "60 Seconds! Reatomized", file: "", icon: ICON_BASE + "60secondsreatomized.webp" },
-        { title: "Casualties Unknown", file: "", icon: ICON_BASE + "casualtiesunknown.webp" },
+        {
+          title: "60 Seconds! Reatomized",
+          file: "",
+          icon: ICON_BASE + "60secondsreatomized.webp",
+        },
+        {
+          title: "Casualties Unknown",
+          file: "",
+          icon: ICON_BASE + "casualtiesunknown.webp",
+        },
         { title: "Gambling With Friends", file: "", wip: true },
         { title: "Beholder", file: "", wip: true },
         { title: "Subnautica", file: "", wip: true },
-        { title: "The Forest", file: "", video: true, parts: ["theforest.mp4.part_aa", "theforest.mp4.part_ab", "theforest.mp4.part_ac", "theforest.mp4.part_ad", "theforest.mp4.part_ae"] },
+        {
+          title: "The Forest",
+          file: "",
+          video: true,
+          parts: [
+            "theforest.mp4.part_aa",
+            "theforest.mp4.part_ab",
+            "theforest.mp4.part_ac",
+            "theforest.mp4.part_ad",
+            "theforest.mp4.part_ae",
+          ],
+        },
         { title: "Duck Season", file: "", icon: ICON_BASE + "duckseason.webp" },
       ];
 
@@ -865,9 +887,7 @@
 
         if (
           searchTerm &&
-          wipGames.some((game) =>
-            game.title.toLowerCase().includes(searchTerm),
-          )
+          wipGames.some((game) => game.title.toLowerCase().includes(searchTerm))
         ) {
           wipHeader.classList.remove("collapsed");
           wipContent.classList.remove("collapsed");
@@ -953,10 +973,10 @@
         });
       }
       function loadVideoParts(parts) {
-        const urls = parts.map(p => MEDIA_BASE + p);
-        return Promise.all(urls.map(url =>
-          fetch(url).then(r => r.arrayBuffer())
-        )).then(buffers => {
+        const urls = parts.map((p) => MEDIA_BASE + p);
+        return Promise.all(
+          urls.map((url) => fetch(url).then((r) => r.arrayBuffer())),
+        ).then((buffers) => {
           const blob = new Blob(buffers, { type: "video/mp4" });
           return URL.createObjectURL(blob);
         });
@@ -985,7 +1005,7 @@
                 video.play();
                 return;
               }
-              loadVideoParts(game.parts).then(url => {
+              loadVideoParts(game.parts).then((url) => {
                 video.src = url;
                 video.dataset.loaded = "1";
                 video.muted = false;
@@ -1003,7 +1023,9 @@
       <div class="game-icon wip-placeholder">WIP</div>
       <div class="game-title">${game.title}</div>
     `;
-            card.addEventListener("click", () => showImagePreview(game.title, ""));
+            card.addEventListener("click", () =>
+              showImagePreview(game.title, ""),
+            );
             card.addEventListener("keydown", (e) => {
               if (e.key === "Enter" || e.key === " ") {
                 e.preventDefault();
@@ -1015,7 +1037,9 @@
       <img class="game-icon" src="${game.icon}" alt="${game.title}" />
       <div class="game-title">${game.title}</div>
     `;
-            card.addEventListener("click", () => showImagePreview(game.title, game.icon));
+            card.addEventListener("click", () =>
+              showImagePreview(game.title, game.icon),
+            );
             card.addEventListener("keydown", (e) => {
               if (e.key === "Enter" || e.key === " ") {
                 e.preventDefault();
@@ -1190,7 +1214,11 @@
             wipGrid.querySelectorAll(".game-card"),
           ).filter((card) => card.style.display !== "none");
 
-          const allVisibleCards = [...visibleMainCards, ...visibleBaldiCards, ...visibleWipCards];
+          const allVisibleCards = [
+            ...visibleMainCards,
+            ...visibleBaldiCards,
+            ...visibleWipCards,
+          ];
 
           if (allVisibleCards.length === 0) return;
 
